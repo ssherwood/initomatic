@@ -1,0 +1,12 @@
+subprojects {
+    dependencies {
+        compile('org.jetbrains.kotlin:kotlin-stdlib-jdk8')
+        compile('org.jetbrains.kotlin:kotlin-reflect')
+        compile('com.fasterxml.jackson.module:jackson-module-kotlin')
+
+        testCompile('junit:junit')
+        testCompile('org.assertj:assertj-core')
+        testCompile('org.mockito:mockito-core')
+        testCompile('org.hamcrest:hamcrest-core')
+    }
+}

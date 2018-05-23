@@ -1,0 +1,5 @@
+dependencies {
+    compile("org.pf4j:pf4j:${pf4jVersion}")
+    compile('org.jetbrains.kotlin:kotlin-stdlib-jdk8')
+    compile('org.jetbrains.kotlin:kotlin-reflect')
+}

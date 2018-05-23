@@ -1,0 +1,6 @@
+dependencies {
+    compile('org.springframework.boot:spring-boot-autoconfigure')
+    compile('org.springframework:spring-webmvc')
+    compile("org.pf4j:pf4j:${pf4jVersion}")
+    compile project(':shared:initomatic-api')
+}
