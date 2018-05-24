@@ -3,6 +3,7 @@ package io.undertree.initomatic.blueprints
 import io.undertree.initomatic.api.InitomaticPlugin
 import org.pf4j.PluginManager
 import org.springframework.web.bind.annotation.*
+import java.time.Instant
 
 /**
  *
@@ -13,7 +14,7 @@ class BlueprintController(private val pluginManager: PluginManager) {
 
     @GetMapping
     fun findAll(): String {
-        // invoke the plugin
+
         val plugins = pluginManager.getExtensions(InitomaticPlugin::class.java)
 
         // force plugin to reload
@@ -28,7 +29,6 @@ class BlueprintController(private val pluginManager: PluginManager) {
             println(">>> ${plugin.version()} - ${plugin.author()}")
         }
 
-        return "Hello23456"
+        return "blueprintController ${Instant.now()}"
     }
-
 }

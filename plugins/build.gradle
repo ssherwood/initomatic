@@ -23,10 +23,17 @@ subprojects {
         from plugin
         into pluginsDir
     }
-}
 
-task assemblePlugins(type: Copy) {
-    dependsOn subprojects.assemblePlugin
-}
+    task assemblePlugins(type: Copy) {
+        dependsOn subprojects.assemblePlugin
+    }
 
-//build.dependsOn project.tasks.assemblePlugins
+    build.dependsOn project.tasks.assemblePlugins
+
+    // common plugin dependencies
+    dependencies {
+        // compileOnly important!!!
+        // We do not want to put the api into the zip file since the main program has it already!
+        compileOnly project(':shared:initomatic-api')
+    }
+}

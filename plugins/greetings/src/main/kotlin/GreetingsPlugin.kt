@@ -23,9 +23,6 @@ class GreetingsPlugin(wrapper: PluginWrapper) : Plugin(wrapper) {
 
 @Extension
 class KotlinGreeting : InitomaticPlugin {
-    override fun author(): String = "Ted"
-
-    override fun version(): String {
-        return StringUtils.capitalize("0.0.1")
-    }
+    override fun author() = "Ted"
+    override fun version(): String = StringUtils.capitalize("0.0.1")
 }

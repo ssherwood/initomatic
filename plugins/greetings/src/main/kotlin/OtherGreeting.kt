@@ -6,9 +6,6 @@ import org.pf4j.Extension
 
 @Extension
 class OtherGreeting : InitomaticPlugin {
-    override fun author(): String = "Shawn"
-
-    override fun version(): String {
-        return StringUtils.capitalize("0.1.1")
-    }
+    override fun author() = "Shawn"
+    override fun version(): String = StringUtils.capitalize("0.1.1")
 }

@@ -1,9 +1,7 @@
 dependencies {
     compile project(':shared:initomatic-api')
     compile project(':components:blueprints')
-
-    compile("org.pf4j:pf4j:${pf4jVersion}")
-    compile('org.apache.commons:commons-lang3')
-
-    runtime('org.springframework.boot:spring-boot-devtools')
+    compile project(':components:pluginz')
+    compile 'org.apache.commons:commons-lang3'
+    runtime 'org.springframework.boot:spring-boot-devtools'
 }

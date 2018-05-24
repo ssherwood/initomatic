@@ -1,3 +1,6 @@
-# Initomatic
+# Init-o-matic
 
-Initial PoC of Initomatic.  Where the improbable becomes probable.
+Initial PoC of Init-o-matic (ih-nit-OH-mat-ik).
+
+Where the improbable becomes probable.
+

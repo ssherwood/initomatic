@@ -1,7 +1,10 @@
 rootProject.name = 'initomatic'
 
-// conditional on development mode?
 include 'shared:initomatic-api'
+
 include 'plugins:greetings'
+
 include 'components:blueprints'
+include 'components:pluginz'
+
 include 'apps:initomatic-server'

@@ -2,19 +2,11 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-
+    // use kapt to process @Extension(s) to create META-INF/extensions.idx file
     kapt("org.pf4j:pf4j:${pf4jVersion}") {
         exclude group: "org.slf4j"
     }
 
-    // compileOnly important!!! We do not want to put the api into the zip file since the main program has it already!
-    compileOnly project(':shared:initomatic-api')
-    compile('org.apache.commons:commons-lang3:3.5')
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    compile 'org.apache.commons:commons-lang3:3.5'
 }
-
-task assemblePlugins(type: Copy) {
-    dependsOn subprojects.assemblePlugin
-}
-
-build.dependsOn project.tasks.assemblePlugins
