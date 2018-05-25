@@ -29,21 +29,24 @@ class InitomaticPluginManager : DefaultPluginManager() {
     override fun getRuntimeMode() = RuntimeMode.DEVELOPMENT
 
     // customized default development plugins dir
-    // find plugins in the /plugins directory where the app is run
+    // find plugins in the /plugins directory where the app itself is run
     override fun createPluginsRoot(): Path =
             Paths.get(System.getProperty("pf4j.pluginsDir", "plugins"))
 
     // TODO
-    // needed to customize to set the classloader to the currentThread when using Spring Boot devtools
-    override fun createPluginLoader(): PluginLoader {
-        return CompoundPluginLoader()
-                .add(object : DefaultPluginLoader(this, pluginClasspath) {
-                    override fun createPluginClassLoader(pluginPath: Path, pluginDescriptor: PluginDescriptor): PluginClassLoader {
-                        return PluginClassLoader(pluginManager, pluginDescriptor, Thread.currentThread().contextClassLoader)
-                    }
-                })
-                .add(JarPluginLoader(this))
-    }
+    // needed to customize to set the classloader to currentThread when using Spring Boot devtools
+    override fun createPluginLoader(): PluginLoader =
+            CompoundPluginLoader()
+                    .add(object : DefaultPluginLoader(this, pluginClasspath) {
+                        override fun createPluginClassLoader(pluginPath: Path, pluginDescriptor: PluginDescriptor): PluginClassLoader =
+                                PluginClassLoader(pluginManager, pluginDescriptor, Thread.currentThread().contextClassLoader)
+                    })
+                    .add(JarPluginLoader(this))
+
+    // don't bother with the default properties descriptor
+    override fun createPluginDescriptorFinder(): CompoundPluginDescriptorFinder =
+            CompoundPluginDescriptorFinder()
+                    .add(ManifestPluginDescriptorFinder())
 
     // this is working around the "bug" in the default development plugin classpath with Gradle
     override fun createPluginClasspath(): PluginClasspath {
@@ -52,8 +55,6 @@ class InitomaticPluginManager : DefaultPluginManager() {
         else
             DefaultPluginClasspath()
     }
-
-    override fun createPluginDescriptorFinder(): CompoundPluginDescriptorFinder = CompoundPluginDescriptorFinder().add(ManifestPluginDescriptorFinder())
 }
 
 // TODO

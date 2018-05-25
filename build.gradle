@@ -19,11 +19,12 @@ buildscript {
 
 defaultTasks "clean", "build"
 
-// plugin location
+// packaged plugin location
 ext.pluginsDir = rootProject.buildDir.path + '/plugins'
 
 subprojects {
     repositories {
+        // mavenLocal()
         jcenter()
         mavenCentral()
     }
