@@ -1,4 +1,4 @@
-// apply to all "apps" subprojects
+// apply to all "applications" subprojects
 subprojects {
     apply plugin: 'org.springframework.boot'
 

@@ -7,4 +7,4 @@ include 'plugins:greetings'
 include 'components:blueprints'
 include 'components:pluginz'
 
-include 'apps:initomatic-server'
+include 'applications:initomatic-server'

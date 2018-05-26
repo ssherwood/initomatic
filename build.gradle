@@ -30,7 +30,7 @@ subprojects {
     }
 
     // don't apply plugins to 'container' folders to avoid /build outputs
-    if (['apps', 'components', 'plugins', 'shared'].contains(name)) {
+    if (['applications', 'components', 'plugins', 'shared'].contains(name)) {
         return
     }
 

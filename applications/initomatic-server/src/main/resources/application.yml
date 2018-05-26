@@ -1,0 +1,11 @@
+
+spring:
+  devtools:
+    restart:
+      additional-paths: plugins
+
+# management:
+#   endpoints:
+#     web:
+#       exposure:
+#         include: "*"

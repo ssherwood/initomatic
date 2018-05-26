@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-package io.undertree.initomatic.plugins
+package io.undertree.initomatic
 
-import io.undertree.initomatic.blueprints.PluginController
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Configuration
+import io.undertree.initomatic.blueprints.EnableBlueprintComponent
+import io.undertree.initomatic.plugins.EnablePluginComponent
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
-@Configuration
-@ComponentScan(basePackageClasses = [PluginController::class])
-internal class PluginConfig
+@SpringBootApplication
+@EnableBlueprintComponent
+@EnablePluginComponent
+class InitomaticApp
+
+fun main(args: Array<String>) {
+    runApplication<InitomaticApp>(*args)
+}
