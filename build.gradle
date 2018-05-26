@@ -14,6 +14,7 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
         classpath "org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}"
+        classpath 'net.nemerosa:versioning:2.6.1'
     }
 }
 
@@ -22,6 +23,7 @@ defaultTasks "clean", "build"
 // packaged plugin location
 ext.pluginsDir = rootProject.buildDir.path + '/plugins'
 
+// apply this configuration to all subprojects
 subprojects {
     repositories {
         // mavenLocal()
@@ -31,15 +33,17 @@ subprojects {
 
     // don't apply plugins to 'container' folders to avoid /build outputs
     if (['applications', 'components', 'plugins', 'shared'].contains(name)) {
+        // okay, this caused an issue where I had to name a real folder pluginz... sigh...
         return
     }
 
     apply plugin: 'kotlin'
     apply plugin: 'kotlin-spring'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'net.nemerosa.versioning'
 
     group = 'io.undertree.initomatic'
-    version = '0.0.1-SNAPSHOT'
+    version = versioning.info.full
     sourceCompatibility = 1.8
 
     compileKotlin {
@@ -58,7 +62,7 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
         }
     }
 }

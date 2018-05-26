@@ -16,16 +16,14 @@
 
 package io.undertree.initomatic
 
-import io.undertree.initomatic.blueprints.EnableBlueprintComponent
-import io.undertree.initomatic.plugins.EnablePluginComponent
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-@EnableBlueprintComponent
-@EnablePluginComponent
 class InitomaticApp
 
 fun main(args: Array<String>) {
-    runApplication<InitomaticApp>(*args)
+    runApplication<InitomaticApp>(*args) {
+        setLogStartupInfo(true)
+    }
 }

@@ -1,13 +1,14 @@
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-kapt'
+// apply plugin: 'kotlin'
+// apply plugin: 'kotlin-kapt'
 
 dependencies {
     compile project(':shared:initomatic-api')
     compile project(':components:blueprints')
     compile project(':components:pluginz')
     compile 'org.apache.commons:commons-lang3'
+    compile 'io.github.microutils:kotlin-logging:1.5.4'
+
+    // kapt 'org.springframework.boot:spring-boot-configuration-processor'
 
     runtime 'org.springframework.boot:spring-boot-devtools'
-
-    kapt 'org.springframework.boot:spring-boot-configuration-processor'
 }

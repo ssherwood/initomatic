@@ -51,7 +51,8 @@ class InitomaticPluginManager : DefaultPluginManager() {
     // customized default development plugins dir
     // find plugins in the /plugins directory where the app itself is run
     override fun createPluginsRoot(): Path =
-            Paths.get(System.getProperty("pf4j.pluginsDir", "plugins"))
+            Paths.get(System.getProperty("pf4j.pluginsDir",
+                    if (isDevelopment) "plugins" else "build/plugins"))
 
     // TODO
     // needed to customize to set the classloader to currentThread when using Spring Boot devtools

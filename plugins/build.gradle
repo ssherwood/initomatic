@@ -9,6 +9,7 @@ subprojects {
     }
 
     task plugin(type: Jar) {
+        version = "0.0.1-SNAPSHOT"
         baseName = "plugin-${pluginId}"
         into('classes') {
             with jar
@@ -25,7 +26,7 @@ subprojects {
     }
 
     task assemblePlugins(type: Copy) {
-        dependsOn subprojects.assemblePlugin
+        dependsOn assemblePlugin
     }
 
     build.dependsOn project.tasks.assemblePlugins

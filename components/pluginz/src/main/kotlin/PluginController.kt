@@ -17,12 +17,15 @@
 package io.undertree.initomatic.blueprints
 
 import io.undertree.initomatic.api.InitomaticPlugin
+import mu.KotlinLogging
 import org.pf4j.PluginManager
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
+
+private val logger = KotlinLogging.logger {}
 
 /**
  *
@@ -31,16 +34,12 @@ import java.time.Instant
 @RequestMapping("plugins")
 class PluginController(private val pluginManager: PluginManager) {
 
-    companion object {
-        private val logger = LoggerFactory.getLogger(PluginController::class.java)
-    }
-
     @GetMapping
     fun findAll(): String {
         val plugins = pluginManager.getExtensions(InitomaticPlugin::class.java)
 
         plugins.forEach { plugin ->
-            println(">>> ${plugin.version()} - ${plugin.authors()}")
+            logger.info { ">>> ${plugin.version()} - ${plugin.authors()}" }
         }
 
         return "pluginsController ${Instant.now()}"
