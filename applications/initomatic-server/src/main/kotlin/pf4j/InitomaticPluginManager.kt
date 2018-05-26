@@ -17,7 +17,11 @@
 package io.undertree.initomatic.pf4j
 
 import org.pf4j.*
+import org.pf4j.util.HiddenFilter
+import org.pf4j.util.NameFileFilter
+import org.pf4j.util.OrFileFilter
 import org.springframework.stereotype.Component
+import java.io.FileFilter
 import java.nio.file.Path
 import java.nio.file.Paths
 import javax.annotation.PostConstruct
@@ -49,10 +53,10 @@ class InitomaticPluginManager : DefaultPluginManager() {
             RuntimeMode.byName(System.getProperty("pf4j.mode", RuntimeMode.DEVELOPMENT.toString()))
 
     // customized default development plugins dir
-    // find plugins in the /plugins directory where the app itself is run
+    // find plugins in the ./plugins directory where the app itself is run
     override fun createPluginsRoot(): Path =
             Paths.get(System.getProperty("pf4j.pluginsDir",
-                    if (isDevelopment) "plugins" else "build/plugins"))
+                    if (isDevelopment) "plugins" else "plugins/build/plugins"))
 
     // TODO
     // needed to customize to set the classloader to currentThread when using Spring Boot devtools
@@ -63,6 +67,25 @@ class InitomaticPluginManager : DefaultPluginManager() {
                                 PluginClassLoader(pluginManager, pluginDescriptor, Thread.currentThread().contextClassLoader)
                     })
                     .add(JarPluginLoader(this))
+
+    // work around another little development mode annoyance with Gradle
+    override fun createPluginRepository(): PluginRepository {
+        return CompoundPluginRepository()
+                .add(object : DefaultPluginRepository(pluginsRoot, isDevelopment) {
+                    override fun createHiddenPluginFilter(development: Boolean): FileFilter {
+                        val hiddenPluginFilter = OrFileFilter(HiddenFilter())
+
+                        if (development) {
+                            hiddenPluginFilter
+                                    .addFileFilter(NameFileFilter("target"))
+                                    .addFileFilter(NameFileFilter("build"))
+                        }
+
+                        return hiddenPluginFilter
+                    }
+                })
+                .add(JarPluginRepository(pluginsRoot))
+    }
 
     // don't bother with the default properties descriptor
     override fun createPluginDescriptorFinder(): CompoundPluginDescriptorFinder =

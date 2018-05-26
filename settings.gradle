@@ -5,6 +5,6 @@ include 'shared:initomatic-api'
 include 'plugins:greetings'
 
 include 'components:blueprints'
-include 'components:pluginz'
+include 'components:plugins'
 
 include 'applications:initomatic-server'

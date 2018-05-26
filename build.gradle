@@ -20,9 +20,6 @@ buildscript {
 
 defaultTasks "clean", "build"
 
-// packaged plugin location
-ext.pluginsDir = rootProject.buildDir.path + '/plugins'
-
 // apply this configuration to all subprojects
 subprojects {
     repositories {
@@ -32,8 +29,9 @@ subprojects {
     }
 
     // don't apply plugins to 'container' folders to avoid /build outputs
-    if (['applications', 'components', 'plugins', 'shared'].contains(name)) {
+    if ([':applications', ':components', ':plugins', ':shared'].contains(path)) {
         // okay, this caused an issue where I had to name a real folder pluginz... sigh...
+        //println("Skipping >>>> $path")
         return
     }
 

@@ -4,11 +4,11 @@
 dependencies {
     compile project(':shared:initomatic-api')
     compile project(':components:blueprints')
-    compile project(':components:pluginz')
+    compile project(':components:plugins')
     compile 'org.apache.commons:commons-lang3'
     compile 'io.github.microutils:kotlin-logging:1.5.4'
 
-    // kapt 'org.springframework.boot:spring-boot-configuration-processor'
+    //kapt 'org.springframework.boot:spring-boot-configuration-processor'
 
     runtime 'org.springframework.boot:spring-boot-devtools'
 }

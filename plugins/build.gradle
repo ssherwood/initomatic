@@ -1,4 +1,12 @@
+// packaged plugin location
+ext.pluginsDir = buildDir.path + '/plugins'
+
 subprojects {
+    apply plugin: 'java'
+
+    // right now having to do this twice since we end up with 2 manifests
+    // in the tmp output folder and sometimes this confuses pf4j when it
+    // finds the empty one
     jar {
         manifest {
             attributes 'Plugin-Class': "${pluginClass}",
@@ -9,8 +17,10 @@ subprojects {
     }
 
     task plugin(type: Jar) {
-        version = "0.0.1-SNAPSHOT"
         baseName = "plugin-${pluginId}"
+        manifest {
+            from(file("${buildDir}/tmp/jar/MANIFEST.MF"))
+        }
         into('classes') {
             with jar
         }
@@ -24,17 +34,12 @@ subprojects {
         from plugin
         into pluginsDir
     }
-
-    task assemblePlugins(type: Copy) {
-        dependsOn assemblePlugin
-    }
-
-    build.dependsOn project.tasks.assemblePlugins
-
-    // common plugin dependencies
-    dependencies {
-        // compileOnly important!!!
-        // We do not want to put the api into the zip file since the main program has it already!
-        compileOnly project(':shared:initomatic-api')
-    }
 }
+
+apply plugin: 'java'
+
+task assemblePlugins(type: Copy) {
+    dependsOn subprojects.assemblePlugin
+}
+
+build.dependsOn project.tasks.assemblePlugins
