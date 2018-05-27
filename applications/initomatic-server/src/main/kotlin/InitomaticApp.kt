@@ -23,7 +23,5 @@ import org.springframework.boot.runApplication
 class InitomaticApp
 
 fun main(args: Array<String>) {
-    runApplication<InitomaticApp>(*args) {
-        setLogStartupInfo(true)
-    }
+    runApplication<InitomaticApp>(*args)
 }

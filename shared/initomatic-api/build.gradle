@@ -1,3 +1,21 @@
+apply plugin: 'kotlin'
+
+sourceCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs = ["-Xjsr305=strict"]
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs = ["-Xjsr305=strict"]
+    }
+}
+
 dependencies {
     compile "org.pf4j:pf4j:${pf4jVersion}"
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'

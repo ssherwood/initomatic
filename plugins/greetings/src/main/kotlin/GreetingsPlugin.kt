@@ -21,19 +21,28 @@ import org.apache.commons.lang3.StringUtils
 import org.pf4j.Extension
 import org.pf4j.Plugin
 import org.pf4j.PluginWrapper
+import org.slf4j.LoggerFactory
+
+//private val logger = KotlinLogging.logger {}
+// ^ couldn't get this to work in deployment mode (classloader issues)
 
 /**
  *
  */
 class GreetingsPlugin(wrapper: PluginWrapper) : Plugin(wrapper) {
 
+    companion object {
+        private val logger = LoggerFactory.getLogger(GreetingsPlugin::class.java.name)
+    }
+
     override fun start() {
-        println("KotlinPlugin.start()")
-        println(StringUtils.upperCase("KotlinPlugin using StringUtils"))
+        logger.info("KotlinPlugin.start()")
+        // just to demonstrate that we can use a external library
+        logger.info(StringUtils.upperCase("KotlinPlugin using StringUtils"))
     }
 
     override fun stop() {
-        println("KotlinPlugin.stop()")
+        logger.info("KotlinPlugin.stop()")
     }
 }
 

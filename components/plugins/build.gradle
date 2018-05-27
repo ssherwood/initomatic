@@ -1,6 +1,6 @@
 dependencies {
     compile project(':shared:initomatic-api')
 
-    compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile 'org.springframework:spring-webmvc'
+    compile 'org.springframework.boot:spring-boot-autoconfigure'
 }

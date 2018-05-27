@@ -48,18 +48,19 @@ class InitomaticPluginManager : DefaultPluginManager() {
     @PreDestroy
     override fun stopPlugins() = super.stopPlugins()
 
-    // prefer default to be in development mode
+    // prefer default to be in development mode instead
     override fun getRuntimeMode(): RuntimeMode =
             RuntimeMode.byName(System.getProperty("pf4j.mode", RuntimeMode.DEVELOPMENT.toString()))
 
-    // customized default development plugins dir
+    // customized the default development plugins dir
     // find plugins in the ./plugins directory where the app itself is run
     override fun createPluginsRoot(): Path =
             Paths.get(System.getProperty("pf4j.pluginsDir",
                     if (isDevelopment) "plugins" else "plugins/build/plugins"))
 
-    // TODO
-    // needed to customize to set the classloader to currentThread when using Spring Boot devtools
+    // TODO research classpath issues in development mode
+    // - need to customize to set the classloader to currentThread when using
+    //   devtools
     override fun createPluginLoader(): PluginLoader =
             CompoundPluginLoader()
                     .add(object : DefaultPluginLoader(this, pluginClasspath) {
@@ -75,13 +76,13 @@ class InitomaticPluginManager : DefaultPluginManager() {
                     override fun createHiddenPluginFilter(development: Boolean): FileFilter {
                         val hiddenPluginFilter = OrFileFilter(HiddenFilter())
 
-                        if (development) {
+                        return if (isDevelopment) {
                             hiddenPluginFilter
                                     .addFileFilter(NameFileFilter("target"))
                                     .addFileFilter(NameFileFilter("build"))
+                        } else {
+                            hiddenPluginFilter
                         }
-
-                        return hiddenPluginFilter
                     }
                 })
                 .add(JarPluginRepository(pluginsRoot))

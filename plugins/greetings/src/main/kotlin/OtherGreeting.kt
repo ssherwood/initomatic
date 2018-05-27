@@ -20,6 +20,8 @@ import io.undertree.initomatic.api.InitomaticPlugin
 import org.apache.commons.lang3.StringUtils
 import org.pf4j.Extension
 
+//private val logger = KotlinLogging.logger {}
+
 @Extension
 class OtherGreeting : InitomaticPlugin {
     override fun authors() = listOf("Shawn")

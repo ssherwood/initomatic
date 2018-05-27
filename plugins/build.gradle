@@ -1,12 +1,11 @@
-// packaged plugin location
+apply plugin: 'base'
+
+// make the default "packaged" plugin location the build/plugins folder of this project
 ext.pluginsDir = buildDir.path + '/plugins'
 
 subprojects {
     apply plugin: 'java'
 
-    // right now having to do this twice since we end up with 2 manifests
-    // in the tmp output folder and sometimes this confuses pf4j when it
-    // finds the empty one
     jar {
         manifest {
             attributes 'Plugin-Class': "${pluginClass}",
@@ -17,16 +16,21 @@ subprojects {
     }
 
     task plugin(type: Jar) {
-        baseName = "plugin-${pluginId}"
+        baseName = "initomatic-${pluginId}"
+
         manifest {
-            from(file("${buildDir}/tmp/jar/MANIFEST.MF"))
+            // use the generated manifest from the jar task
+            from file("${buildDir}/tmp/jar/MANIFEST.MF")
         }
-        into('classes') {
-            with jar
-        }
+
         into('lib') {
             from configurations.compile
         }
+
+        into('classes') {
+            with jar
+        }
+
         extension('zip')
     }
 
@@ -35,8 +39,6 @@ subprojects {
         into pluginsDir
     }
 }
-
-apply plugin: 'java'
 
 task assemblePlugins(type: Copy) {
     dependsOn subprojects.assemblePlugin

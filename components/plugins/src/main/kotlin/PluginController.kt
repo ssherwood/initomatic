@@ -19,7 +19,6 @@ package io.undertree.initomatic.blueprints
 import io.undertree.initomatic.api.InitomaticPlugin
 import mu.KotlinLogging
 import org.pf4j.PluginManager
-import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -38,7 +37,15 @@ class PluginController(private val pluginManager: PluginManager) {
     fun findAll(): String {
         val plugins = pluginManager.getExtensions(InitomaticPlugin::class.java)
 
+        // force plugin to reload
+        // TODO - figure out a way to do this during development so the whole project
+        // doesn't need to restart when actually modifying code in the plugins...
+        //pluginManager.unloadPlugin("greetings-plugin")
+        //pluginManager.loadPlugins()
+        //pluginManager.startPlugin("greetings-plugin")
+
         plugins.forEach { plugin ->
+            // val loader /= pluginManager.getPluginClassLoader("greetings-plugin")
             logger.info { ">>> ${plugin.version()} - ${plugin.authors()}" }
         }
 
