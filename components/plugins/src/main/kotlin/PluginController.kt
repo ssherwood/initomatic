@@ -17,12 +17,14 @@
 package io.undertree.initomatic.blueprints
 
 import io.undertree.initomatic.api.InitomaticPlugin
+import io.undertree.initomatic.plugins.PluginDescriptor
 import mu.KotlinLogging
 import org.pf4j.PluginManager
+import org.pf4j.update.PluginInfo
+import org.pf4j.update.UpdateManager
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
 
 private val logger = KotlinLogging.logger {}
 
@@ -31,10 +33,12 @@ private val logger = KotlinLogging.logger {}
  */
 @RestController
 @RequestMapping("plugins")
-class PluginController(private val pluginManager: PluginManager) {
+class PluginController(private val pluginManager: PluginManager,
+                       private val updateManager: UpdateManager) {
 
     @GetMapping
-    fun findAll(): String {
+    fun findAll(): List<PluginDescriptor> {
+
         val plugins = pluginManager.getExtensions(InitomaticPlugin::class.java)
 
         // force plugin to reload
@@ -49,7 +53,16 @@ class PluginController(private val pluginManager: PluginManager) {
             logger.info { ">>> ${plugin.version()} - ${plugin.authors()}" }
         }
 
-        return "pluginsController ${Instant.now()}"
+        //return updateManager.availablePlugins
+
+        return pluginManager.plugins
+                .map {
+                    PluginDescriptor(it.pluginId,
+                            it.descriptor.pluginDescription,
+                            it.pluginPath.toAbsolutePath().toString(),
+                            it.pluginClassLoader.toString())
+                }
+                .toList()
     }
 
     @GetMapping("/summary")

@@ -2,8 +2,9 @@ buildscript {
     ext {
         kotlinVersion = '1.2.41'
         springBootVersion = '2.0.2.RELEASE'
-        pf4jVersion = '2.2.0'
         versioningVersion = '2.6.1'
+        pf4jVersion = '2.2.0'
+        pf4jUpdateVersion = '2.0.0'
     }
 
     repositories {

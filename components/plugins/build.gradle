@@ -3,4 +3,5 @@ dependencies {
 
     compile 'org.springframework:spring-webmvc'
     compile 'org.springframework.boot:spring-boot-autoconfigure'
+    compile "org.pf4j:pf4j-update:${pf4jUpdateVersion}"
 }

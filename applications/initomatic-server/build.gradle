@@ -33,6 +33,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.apache.commons:commons-lang3'
     compile 'io.github.microutils:kotlin-logging:1.5.4'
+    compile "org.pf4j:pf4j-update:${pf4jUpdateVersion}"
+
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 

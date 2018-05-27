@@ -1,0 +1,7 @@
+[
+  {
+    "id": "local-folder",
+    "url": "file:/home/dev/Repos/plugins/",
+    "pluginsJsonFileName": "plugins.json"
+  }
+]

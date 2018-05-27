@@ -7,11 +7,15 @@ subprojects {
     apply plugin: 'java'
 
     jar {
+        // derive these values from each projects gradle.properties
         manifest {
-            attributes 'Plugin-Class': "${pluginClass}",
-                    'Plugin-Id': "${pluginId}",
+            attributes 'Plugin-Id': "${pluginId}",
+                    'Plugin-Description': "${pluginDescription}",
+                    'Plugin-Class': "${pluginClass}",
                     'Plugin-Version': "${version}",
-                    'Plugin-Provider': "${pluginProvider}"
+                    'Plugin-Provider': "${pluginProvider}",
+                    'Plugin-Dependencies': "${pluginDependencies}",
+                    'Plugin-License': "${pluginLicense}"
         }
     }
 
