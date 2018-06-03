@@ -1,11 +1,10 @@
+#
+# Default profile
+#
+# This profile activates the "local" profile by default.
+# Please refer to https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+#
 
 spring:
-  devtools:
-    restart:
-      additional-paths: plugins
-
-# management:
-#   endpoints:
-#     web:
-#       exposure:
-#         include: "*"
+  profiles:
+    active: local

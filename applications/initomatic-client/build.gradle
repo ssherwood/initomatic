@@ -1,0 +1,36 @@
+plugins {
+  id 'java'
+  id "com.moowork.node" version "1.2.0"
+}
+
+node {
+  version = '8.11.2'
+  npmVersion = '5.6.0'
+  download = true
+}
+
+clean {
+  delete 'dist'
+}
+
+jar {
+  from('dist/initomatic') {
+    into('static')
+  }
+}
+
+task ngBuild(type: NpmTask, dependsOn: 'npmInstall') {
+  group = 'ng'
+  description = 'Compile client side folder for development'
+  args = ['run', 'build']
+}
+
+task ngLint(type: NpmTask, dependsOn: 'npmInstall') {
+  group = 'ng'
+  description = 'Run lint checks against client'
+  args = ['run', 'lint']
+}
+
+// TODO this seems to slow IntelliJ start-up since I think it is really building every time
+jar.dependsOn tasks.ngBuild
+test.dependsOn tasks.ngLint

@@ -1,0 +1,33 @@
+#
+# Default "local" profile (optimized for the local development experience).
+#
+# The primary features of this profile include:
+#
+# - devtools will monitor the plugins paths to trigger reloads on any changes.
+#
+# - the initomatic-client/dist folder will be used as the primary static
+#   location for Spring Boot to serve from 8080 (which is not the preferred
+#   method to run the client in development, but it keeps new developers from
+#   being confused at the 404 when run from within IntelliJ).
+#
+# - all actuator "management" endpoints are exposed and the health endpoint
+#   always shows details (don't do this in production).
+#
+
+spring:
+  devtools:
+    restart:
+      additional-paths: plugins
+  resources:
+    static-locations:
+      - file:./applications/initomatic-client/dist/initomatic
+      - classpath:/static/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
