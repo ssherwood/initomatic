@@ -19,18 +19,27 @@ jar {
   }
 }
 
-task ngBuild(type: NpmTask, dependsOn: 'npmInstall') {
-  group = 'ng'
+task ngBuild(type: NpmTask, group: 'Angular ng') {
   description = 'Compile client side folder for development'
   args = ['run', 'build']
+
+  onlyIf {
+    // don't ng build if dist exists
+    !file("${projectDir}/dist").exists()
+  }
 }
 
-task ngLint(type: NpmTask, dependsOn: 'npmInstall') {
-  group = 'ng'
+task ngLint(type: NpmTask, group: 'Angular ng') {
   description = 'Run lint checks against client'
   args = ['run', 'lint']
 }
 
-// TODO this seems to slow IntelliJ start-up since I think it is really building every time
+task ngEndToEnd(type: NpmTask, group: 'Angular ng') {
+  description = 'Run lint checks against client'
+  args = ['run', 'e2e']
+}
+
+processResources.dependsOn tasks.npmInstall
 jar.dependsOn tasks.ngBuild
 test.dependsOn tasks.ngLint
+build.dependsOn tasks.ngEndToEnd
