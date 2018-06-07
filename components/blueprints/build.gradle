@@ -1,6 +1,30 @@
+plugins {
+    id 'kotlin'
+    id 'kotlin-spring'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+        freeCompilerArgs = ["-Xjsr305=strict"]
+    }
+}
+
 dependencies {
     compile project(':shared:initomatic-api')
 
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    compile 'org.jetbrains.kotlin:kotlin-reflect'
+    compile 'io.github.microutils:kotlin-logging:1.5.4'
+
     compile 'org.springframework:spring-webmvc'
     compile 'org.springframework.boot:spring-boot-autoconfigure'
+
+    testCompile 'junit:junit'
+    testCompile 'org.assertj:assertj-core'
+    testCompile 'org.mockito:mockito-core'
+    testCompile 'org.hamcrest:hamcrest-core'
 }

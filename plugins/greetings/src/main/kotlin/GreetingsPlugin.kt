@@ -50,4 +50,6 @@ class GreetingsPlugin(wrapper: PluginWrapper) : Plugin(wrapper) {
 class KotlinGreeting : InitomaticPlugin {
     override fun authors() = listOf("Ted")
     override fun version(): String = StringUtils.capitalize("0.0.1")
+    override fun license() = "Apache 2.0"
+    override fun stage() = "Greet"
 }

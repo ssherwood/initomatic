@@ -12,8 +12,22 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     }
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    compile 'org.yaml:snakeyaml:1.21'
 
     compile "org.pf4j:pf4j:${pf4jVersion}"
+
+    //
+    testImplementation('org.junit.jupiter:junit-jupiter-api')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
+
+    testCompile 'junit:junit'
+    testCompile 'org.assertj:assertj-core'
+    testCompile 'org.mockito:mockito-core'
+    testCompile 'org.hamcrest:hamcrest-core'
 }

@@ -16,11 +16,15 @@
 
 package io.undertree.initomatic.api
 
-import org.pf4j.ExtensionPoint
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
-interface InitomaticPlugin : ExtensionPoint {
-    fun version(): String
-    fun authors(): List<String>
-    fun license(): String
-    fun stage(): String
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class InitomaticPluginTest {
+
+    @Test
+    fun `assert that true is indeed true`() {
+        assertThat(true).isEqualTo(true)
+    }
 }

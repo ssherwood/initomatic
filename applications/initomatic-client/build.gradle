@@ -1,3 +1,31 @@
+/*
+ * Obviously this is not a "java" project, but we are leveraging the plugin to
+ * attach a few of the "ng" scripts to the lifecycle.
+ *
+ * The result is a distributable JAR file that contains the bundled JavaScript
+ * in the /static folder.  When this artifact dependency is included in a
+ * typical Spring Boot application, Spring will start serving this content from
+ * the default context root.
+ *
+ * This approach solves a few common problems for developers:
+ *
+ * - No need for a separate NGINX (or other proxy server) since the content is
+ *   served up from the same host elimination most CORS issues.
+ * - Leaves the JavaScript project largely unchanged for front-end developers
+ *   (i.e. they continue to use npm for day-to-day development).
+ * - Provides a convenient packaging format that can later be distributed and
+ *   unpacked if desired (e.g. deploying to edge caching servers).
+ * - Keeps the JavaScript and Spring Boot builds in sync making it easier for
+ *   the Spring developer to have an up-to-date UI without running npm by hand.
+ *
+ * Possible Gotchas:
+ *
+ * - In IntelliJ the ngBuild was being triggered on every run.  This made the
+ *   startup experience lag quite a bit.  I added an onlyIf closure to the task
+ *   to skip the build if the /dist directory is already present.  Be aware of
+ *   this and keep it clean! (since I added /dist to the base clean task -
+ *   which is debatable).
+ */
 plugins {
   id 'java'
   id "com.moowork.node" version "1.2.0"
@@ -20,13 +48,18 @@ jar {
 }
 
 task ngBuild(type: NpmTask, group: 'Angular ng') {
-  description = 'Compile client side folder for development'
+  description = 'Compile client for development'
   args = ['run', 'build']
 
+  // only ngBuild if the /dist doesn't already exists
   onlyIf {
-    // don't ng build if dist exists
     !file("${projectDir}/dist").exists()
   }
+}
+
+task ngBuildWatch(type: NpmTask, group: 'Angular ng') {
+  description = 'Compile client for development and watch changes'
+  args = ['run', 'build-watch']
 }
 
 task ngLint(type: NpmTask, group: 'Angular ng') {
@@ -35,11 +68,13 @@ task ngLint(type: NpmTask, group: 'Angular ng') {
 }
 
 task ngEndToEnd(type: NpmTask, group: 'Angular ng') {
-  description = 'Run lint checks against client'
+  description = 'Run e2e tests against client'
   args = ['run', 'e2e']
 }
 
 processResources.dependsOn tasks.npmInstall
 jar.dependsOn tasks.ngBuild
 test.dependsOn tasks.ngLint
-build.dependsOn tasks.ngEndToEnd
+
+// I'm still debating when/where to trigger the e2e
+// build.dependsOn tasks.ngEndToEnd

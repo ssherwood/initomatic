@@ -1,12 +1,12 @@
 rootProject.name = 'initomatic'
 
+include 'applications:initomatic-client'
+
 include 'shared:initomatic-api'
 
 include 'plugins:greetings'
 
 include 'components:blueprints'
 include 'components:plugins'
-
-include 'applications:initomatic-client'
 
 include 'applications:initomatic-server'

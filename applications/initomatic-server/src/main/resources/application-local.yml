@@ -3,7 +3,8 @@
 #
 # The primary features of this profile include:
 #
-# - devtools will monitor the plugins paths to trigger reloads on any changes.
+# - devtools will monitor the ./plugins and ./dist paths to trigger reloads on
+#   any changes (triggering LiveReload as well).
 #
 # - the initomatic-client/dist folder will be used as the primary static
 #   location for Spring Boot to serve from 8080 (which is not the preferred
@@ -17,7 +18,9 @@
 spring:
   devtools:
     restart:
-      additional-paths: plugins
+      additional-paths:
+        - ./plugins
+        - ./applications/initomatic-client/dist/initomatic
   resources:
     static-locations:
       - file:./applications/initomatic-client/dist/initomatic

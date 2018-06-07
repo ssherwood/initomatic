@@ -50,7 +50,7 @@ class PluginController(private val pluginManager: PluginManager,
 
         plugins.forEach { plugin ->
             // val loader /= pluginManager.getPluginClassLoader("greetings-plugin")
-            logger.info { ">>> ${plugin.version()} - ${plugin.authors()}" }
+            logger.info { ">>> ${plugin.version()} - ${plugin.authors()} - ${plugin.license()}" }
         }
 
         //return updateManager.availablePlugins

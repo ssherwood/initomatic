@@ -5,6 +5,7 @@ plugins {
     id 'org.springframework.boot'
 }
 
+// noinspection GroovyAssignabilityCheck
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -12,6 +13,16 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         jvmTarget = '1.8'
         freeCompilerArgs = ["-Xjsr305=strict"]
+    }
+}
+
+springBoot {
+    buildInfo {
+        properties {
+            additional = [
+                    'foo': 'bar'
+            ]
+        }
     }
 }
 

@@ -16,14 +16,11 @@
 
 package io.undertree.initomatic.plugins
 
-import io.undertree.initomatic.api.InitomaticPlugin
-import org.apache.commons.lang3.StringUtils
+import io.undertree.initomatic.api.InitomaticPluginYml
+import io.undertree.initomatic.api.classpathReader
 import org.pf4j.Extension
 
 //private val logger = KotlinLogging.logger {}
 
 @Extension
-class OtherGreeting : InitomaticPlugin {
-    override fun authors() = listOf("Shawn")
-    override fun version(): String = StringUtils.capitalize("0.1.1")
-}
+class OtherGreeting : InitomaticPluginYml(classpathReader<OtherGreeting>("ext-other-greeting.yml"))
