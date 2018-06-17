@@ -58,6 +58,11 @@ class InitomaticPluginManager : DefaultPluginManager() {
             Paths.get(System.getProperty("pf4j.pluginsDir",
                     if (isDevelopment) "plugins" else "plugins/build/plugins"))
 
+    // don't bother with the default properties descriptor
+    override fun createPluginDescriptorFinder(): CompoundPluginDescriptorFinder =
+            CompoundPluginDescriptorFinder()
+                    .add(ManifestPluginDescriptorFinder())
+
     // TODO research classpath issues in development mode
     // - need to customize to set the classloader to currentThread when using
     //   devtools
@@ -68,51 +73,4 @@ class InitomaticPluginManager : DefaultPluginManager() {
                                 PluginClassLoader(pluginManager, pluginDescriptor, Thread.currentThread().contextClassLoader)
                     })
                     .add(JarPluginLoader(this))
-
-    // work around another little development mode annoyance with Gradle
-    override fun createPluginRepository(): PluginRepository {
-        return CompoundPluginRepository()
-                .add(object : DefaultPluginRepository(pluginsRoot, isDevelopment) {
-                    override fun createHiddenPluginFilter(development: Boolean): FileFilter {
-                        val hiddenPluginFilter = OrFileFilter(HiddenFilter())
-
-                        return if (isDevelopment) {
-                            hiddenPluginFilter
-                                    .addFileFilter(NameFileFilter("target"))
-                                    .addFileFilter(NameFileFilter("build"))
-                        } else {
-                            hiddenPluginFilter
-                        }
-                    }
-                })
-                .add(JarPluginRepository(pluginsRoot))
-    }
-
-    // don't bother with the default properties descriptor
-    override fun createPluginDescriptorFinder(): CompoundPluginDescriptorFinder =
-            CompoundPluginDescriptorFinder()
-                    .add(ManifestPluginDescriptorFinder())
-
-    // this is working around the "bug" in the default development plugin classpath with Gradle
-    override fun createPluginClasspath(): PluginClasspath {
-        return if (isDevelopment)
-            GradleDevelopmentPluginClasspath()
-        else
-            DefaultPluginClasspath()
-    }
-}
-
-// TODO remove with pf4j 2.3.0 is available
-// working around maven specific paths in the default Development classloader
-class GradleDevelopmentPluginClasspath : DevelopmentPluginClasspath() {
-    init {
-        addClassesDirectories(
-                "build/classes/java/main",
-                "build/classes/kotlin/main",
-                "build/resources/main",
-                "build/tmp/kapt3/classes/main")
-
-        // not actually sure what this should be???
-        addLibDirectories("target/lib")
-    }
 }

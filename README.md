@@ -24,13 +24,17 @@ default to Development mode.
 
 ### Plugin Modes
 
-It is important to understand the different modes:
+It is important to understand the different runtime modes:
+
+`-Dpf4j.mode=development`
 
 Development mode is intended for most local development use cases.  Specifically, the plugin
 framework pf4j looks for plugins present in the base ./plugins path.  This mode expects that each
-subfolder contains an un-packaged plugin.  Additionally, a single classloader is used to facilitate
-debugging within an IDE.  This mode will make it much easier to make code changes in plugins and
-have it available without requiring a full rebuild of the project.
+subfolder contains an un-packaged plugin (essentially the gradle subproject).  Additionally, a
+single classloader is used to facilitate debugging.  This mode makes it much easier to change code
+in a plugin and have it available without requiring a full rebuild.
+
+`-Dpf4j.mode=deployment`
 
 Deployment mode is used when the application is deployed to a target environment.  In this mode
 pf4j looks for a specific folder where available plugins are bundled as .zip packages (the default

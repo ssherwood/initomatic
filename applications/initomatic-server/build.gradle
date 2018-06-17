@@ -26,6 +26,13 @@ springBoot {
     }
 }
 
+bootJar {
+    manifest {
+        attributes 'Implementation-Title': 'Initomatic',
+                'Implementation-Version': version
+    }
+}
+
 dependencies {
     compile project(':shared:initomatic-api')
     compile project(':components:blueprints')

@@ -1,9 +1,9 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.41'
-        springBootVersion = '2.0.2.RELEASE'
-        versioningVersion = '2.6.1'
-        pf4jVersion = '2.2.0'
+        kotlinVersion = '1.2.50'
+        springBootVersion = '2.0.3.RELEASE'
+        versioningVersion = '2.7.1'
+        pf4jVersion = '2.3.0'
         pf4jUpdateVersion = '2.0.0'
     }
 
