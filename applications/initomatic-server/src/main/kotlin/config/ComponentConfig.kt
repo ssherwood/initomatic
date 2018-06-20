@@ -16,8 +16,8 @@
 
 package io.undertree.initomatic.config
 
-import io.undertree.initomatic.blueprints.EnableBlueprintComponent
-import io.undertree.initomatic.plugins.EnablePluginComponent
+import io.undertree.initomatic.components.blueprints.EnableBlueprintComponent
+import io.undertree.initomatic.components.plugins.EnablePluginComponent
 import org.springframework.context.annotation.Configuration
 
 /**

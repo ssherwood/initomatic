@@ -24,21 +24,25 @@ import java.io.Reader
  */
 abstract class InitomaticPluginYml(pluginConfigReader: Reader) : InitomaticPlugin {
 
-    private val pluginDefinition: DefaultPluginDefinition =
-            Yaml().loadAs(pluginConfigReader, DefaultPluginDefinition::class.java)
+    private val pluginDefinition = Yaml().loadAs(pluginConfigReader, DefaultPluginDefinition::class.java)
 
     override fun version() = pluginDefinition.version
     override fun authors() = pluginDefinition.authors
     override fun license() = pluginDefinition.license
     override fun stage() = pluginDefinition.stage
+    override fun imageContentType() = pluginDefinition.imageSvg
+    override fun imageBytes() = pluginDefinition.imageBytes
 }
 
 // public and mutable for snakeyml...
-data class DefaultPluginDefinition(
+// TODO we could probably just use a snakey map?
+class DefaultPluginDefinition(
         var version: String = "0.0.0",
         var authors: List<String> = listOf("Anonymous"),
         var license: String = "Unknown",
-        var stage: String = "Default"
+        var stage: String = "Default",
+        var imageSvg: String = "image/svg+xml",
+        var imageBytes: ByteArray = InitomaticPluginYml::class.java.classLoader.getResourceAsStream("plugin.svg").readBytes()
 )
 
 /**

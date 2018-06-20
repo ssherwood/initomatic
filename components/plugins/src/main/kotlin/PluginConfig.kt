@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package io.undertree.initomatic.plugins
+package io.undertree.initomatic.components.plugins
 
-import io.undertree.initomatic.blueprints.PluginController
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 

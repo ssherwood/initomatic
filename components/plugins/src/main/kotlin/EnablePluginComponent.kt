@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.undertree.initomatic.plugins
+package io.undertree.initomatic.components.plugins
 
 import org.springframework.context.annotation.Import
 

@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package io.undertree.initomatic.plugins
+package io.undertree.initomatic.components.plugins
 
-data class PluginDescriptor(
-        val id: String,
-        val description: String,
-        val absolutePath: String,
-        val classloader: String)
+data class PluginExtension(
+        val name: String,
+        val stage: String,
+        val version: String,
+        val license: String,
+        val imageSvg: String
+)

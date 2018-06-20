@@ -14,22 +14,31 @@
  * limitations under the License.
  */
 
-package io.undertree.initomatic.blueprints
+package io.undertree.initomatic.components.plugins
 
 import io.undertree.initomatic.api.InitomaticPlugin
-import io.undertree.initomatic.plugins.PluginDescriptor
 import mu.KotlinLogging
 import org.pf4j.PluginManager
-import org.pf4j.update.PluginInfo
 import org.pf4j.update.UpdateManager
+import org.springframework.http.CacheControl
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
+import org.springframework.util.DigestUtils
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger {}
 
 /**
+ * TODO - figure out a way to do this during development so the whole project
+ * doesn't need to restart when actually modifying code in the plugins...
  *
+ * pluginManager.unloadPlugin("greetings-plugin")
+ * pluginManager.loadPlugins()
+ * pluginManager.startPlugin("greetings-plugin")
  */
 @RestController
 @RequestMapping("plugins")
@@ -37,32 +46,49 @@ class PluginController(private val pluginManager: PluginManager,
                        private val updateManager: UpdateManager) {
 
     @GetMapping
-    fun findAll(): List<PluginDescriptor> {
+    fun findAll(): List<PluginExtension> {
+        return pluginManager.plugins.map { pluginWrapper ->
+            return pluginManager.getExtensions(InitomaticPlugin::class.java, pluginWrapper.pluginId)
+                    .map { pluginExt ->
+                        PluginExtension(pluginWrapper.pluginId, pluginExt.stage(), pluginExt.version(),
+                                pluginExt.license(), pluginExt.imageContentType())
+                    }
+        }.toList()
+    }
 
-        val plugins = pluginManager.getExtensions(InitomaticPlugin::class.java)
-
-        // force plugin to reload
-        // TODO - figure out a way to do this during development so the whole project
-        // doesn't need to restart when actually modifying code in the plugins...
-        //pluginManager.unloadPlugin("greetings-plugin")
-        //pluginManager.loadPlugins()
-        //pluginManager.startPlugin("greetings-plugin")
-
-        plugins.forEach { plugin ->
-            // val loader /= pluginManager.getPluginClassLoader("greetings-plugin")
-            logger.info { ">>> ${plugin.version()} - ${plugin.authors()} - ${plugin.license()}" }
+    @GetMapping("/{pluginId}")
+    fun findById(@PathVariable("pluginId") pluginId: String): List<PluginExtension> {
+        return pluginManager.getExtensions(InitomaticPlugin::class.java, pluginId).map { pluginExt ->
+            PluginExtension(pluginId,
+                    pluginExt.stage(), pluginExt.version(),
+                    pluginExt.license(), pluginExt.imageContentType())
         }
+    }
 
-        //return updateManager.availablePlugins
+    /**
+     * Return the image associated with the plugin stage.
+     * This will return an HTTP Response with an ETag header generated on the
+     * image bytes and should 302 if the browser already cached the image.
+     *
+     * This is a "shallow" ETag implementation since we actually are still
+     * going through the effort to look it up and recalculate it.
+     */
+    @GetMapping("{pluginId}/{stage}/image")
+    fun pluginImage(@PathVariable("pluginId") pluginId: String,
+                    @PathVariable("stage") stage: String): ResponseEntity<ByteArray> {
 
-        return pluginManager.plugins
-                .map {
-                    PluginDescriptor(it.pluginId,
-                            it.descriptor.pluginDescription,
-                            it.pluginPath.toAbsolutePath().toString(),
-                            it.pluginClassLoader.toString())
-                }
-                .toList()
+        logger.info { "inside getmapping" }
+
+        // TODO provide "broken" default image instead of error?
+        val ext = pluginManager.getExtensions(InitomaticPlugin::class.java, pluginId)
+                .find { it.stage() == stage } ?: return ResponseEntity.notFound().build()
+
+        // shallow ETag will at least save on network traffic
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(30, TimeUnit.DAYS))
+                .eTag(DigestUtils.md5DigestAsHex(ext.imageBytes()))
+                .contentType(MediaType.parseMediaType(ext.imageContentType()))
+                .body(ext.imageBytes())
     }
 
     @GetMapping("/summary")

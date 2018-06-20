@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.50'
+        kotlinVersion = '1.2.41' // downgrade due to error: https://discuss.kotlinlang.org/t/kotlin-1-2-50-causing-java-lang-illegalstateexception-scriptingcompilerconfigurationcomponentregistrar-is-not-compatible-with-this-version-of-compiler/8157/8
         springBootVersion = '2.0.3.RELEASE'
         versioningVersion = '2.7.1'
         pf4jVersion = '2.3.0'

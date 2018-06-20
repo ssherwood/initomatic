@@ -23,4 +23,6 @@ interface InitomaticPlugin : ExtensionPoint {
     fun authors(): List<String>
     fun license(): String
     fun stage(): String
+    fun imageContentType(): String
+    fun imageBytes(): ByteArray
 }

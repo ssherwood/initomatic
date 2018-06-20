@@ -20,7 +20,5 @@ import io.undertree.initomatic.api.InitomaticPluginYml
 import io.undertree.initomatic.api.classpathReader
 import org.pf4j.Extension
 
-//private val logger = KotlinLogging.logger {}
-
 @Extension
 class OtherGreeting : InitomaticPluginYml(classpathReader<OtherGreeting>("ext-other-greeting.yml"))

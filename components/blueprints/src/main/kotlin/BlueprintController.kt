@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.undertree.initomatic.blueprints
+package io.undertree.initomatic.components.blueprints
 
-import io.undertree.initomatic.api.InitomaticPlugin
 import mu.KotlinLogging
-import org.pf4j.PluginManager
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
 
 private val logger = KotlinLogging.logger {}

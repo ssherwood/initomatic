@@ -17,11 +17,7 @@
 package io.undertree.initomatic.pf4j
 
 import org.pf4j.*
-import org.pf4j.util.HiddenFilter
-import org.pf4j.util.NameFileFilter
-import org.pf4j.util.OrFileFilter
 import org.springframework.stereotype.Component
-import java.io.FileFilter
 import java.nio.file.Path
 import java.nio.file.Paths
 import javax.annotation.PostConstruct
