@@ -42,6 +42,7 @@ dependencies {
     // kotlin
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     compile 'org.jetbrains.kotlin:kotlin-reflect'
+    compile 'io.github.microutils:kotlin-logging:1.5.4'
     compile 'com.fasterxml.jackson.module:jackson-module-kotlin'
     compile 'io.github.microutils:kotlin-logging:1.5.4'
     testCompile 'org.jetbrains.kotlin:kotlin-test'
@@ -57,6 +58,7 @@ dependencies {
     // other libraries
     compile "org.pf4j:pf4j-update:${pf4jUpdateVersion}"
     compile 'org.apache.commons:commons-lang3'
+    compile 'io.minio:minio:4.0.1'
 
     // tooling
     kapt 'org.springframework.boot:spring-boot-configuration-processor'

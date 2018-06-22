@@ -16,16 +16,15 @@
 
 package io.undertree.initomatic.pf4j
 
-import org.pf4j.update.UpdateManager
-import org.springframework.stereotype.Component
+import org.pf4j.update.FileDownloader
 import java.net.URL
+import java.nio.file.Path
 
-@Component
-class InitomaticUpdateManager(pluginManager: InitomaticPluginManager) : UpdateManager(pluginManager) {
-
-    override fun addRepository(id: String?, url: URL?) {
-        if (repositories.none { it.id == id }) {
-            repositories.add(S3UpdateRepository("s3", URL("http://127.0.0.1:9000")))
-        }
+/**
+ *
+ */
+class S3FileDownloader : FileDownloader {
+    override fun downloadFile(fileUrl: URL?): Path {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

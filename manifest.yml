@@ -1,0 +1,11 @@
+applications:
+- name: initomatic
+  disk_quota: 1G
+  instances: 1
+  memory: 1G
+  routes:
+  - route: initomatic.cfapps.io
+  stack: cflinuxfs2
+  env:
+    JAVA_OPTS: "-Dpf4j.mode=deployment"
+    SPRING_PROFILES_ACTIVE: -local,cloud

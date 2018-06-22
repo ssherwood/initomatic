@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-spring'
 }
 
+// noinspection GroovyAssignabilityCheck
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
