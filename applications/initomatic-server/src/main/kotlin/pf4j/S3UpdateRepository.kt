@@ -17,15 +17,14 @@
 package io.undertree.initomatic.pf4j
 
 import com.google.gson.GsonBuilder
+import io.minio.MinioClient
 import mu.KotlinLogging
-import org.pf4j.update.FileDownloader
 import org.pf4j.update.PluginInfo
 import org.pf4j.update.UpdateRepository
 import org.pf4j.update.util.LenientDateTypeAdapter
-import java.io.InputStreamReader
-import java.io.Reader
 import java.net.URL
 import java.util.*
+
 
 private val logger = KotlinLogging.logger {}
 
@@ -33,9 +32,14 @@ private val logger = KotlinLogging.logger {}
  * TODO still a lot of work to do here...
  *
  */
-class S3UpdateRepository(private val id: String, private val url: URL, private val pluginsJsonFileName: String = "plugins.json") : UpdateRepository {
+class S3UpdateRepository(private val id: String,
+                         private val url: URL,
+                         accessKey: String,
+                         secretKey: String,
+                         private val pluginsJsonFileName: String = "plugins.json") : UpdateRepository {
 
-    // lazy initialize the map
+    private val minioClient = MinioClient(url, accessKey, secretKey)
+
     private val pluginsMap: MutableMap<String, PluginInfo> by lazy {
         initPlugins()
     }
@@ -46,22 +50,21 @@ class S3UpdateRepository(private val id: String, private val url: URL, private v
 
     override fun getPlugins() = pluginsMap
 
-    override fun getPlugin(id: String?): PluginInfo {
-        return pluginsMap[id]!!  // <- TODO this is bad
-    }
+    override fun getPlugin(id: String?) = pluginsMap[id]
 
-    override fun getFileDownloader(): FileDownloader {
-        return S3FileDownloader()
-    }
+    override fun getFileDownloader() = S3FileDownloader()
 
     override fun refresh() {
+        pluginsMap.clear()
         initPlugins()
     }
 
     private fun initPlugins(): MutableMap<String, PluginInfo> {
-        pluginsMap.clear()
+        //pluginsMap.clear()
+
         val gson = GsonBuilder().registerTypeAdapter(Date::class.java, LenientDateTypeAdapter()).create()
-        val pluginsJsonReader: Reader = InputStreamReader(URL(getUrl(), pluginsJsonFileName).openStream())
+        //val pluginsJsonReader = InputStreamReader(URL(getUrl(), pluginsJsonFileName).openStream())
+        val pluginsJsonReader = minioClient.getObject("initomatic", pluginsJsonFileName).bufferedReader()
 
         return gson.fromJson(pluginsJsonReader, Array<PluginInfo>::class.java)
                 .associate { it.id to it }

@@ -16,16 +16,33 @@
 
 package io.undertree.initomatic.pf4j
 
+import mu.KotlinLogging
 import org.pf4j.update.UpdateManager
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.net.URL
+
+
+private val logger = KotlinLogging.logger {}
 
 @Component
 class InitomaticUpdateManager(pluginManager: InitomaticPluginManager) : UpdateManager(pluginManager) {
 
-    override fun addRepository(id: String?, url: URL?) {
-        if (repositories.none { it.id == id }) {
-            repositories.add(S3UpdateRepository("s3", URL("http://127.0.0.1:9000")))
+    @Value("\${s3.url}")
+    lateinit var url: String
+
+    @Value("\${s3.accessKey}")
+    lateinit var accessKey: String
+
+    @Value("\${s3.secretKey}")
+    lateinit var secretKey: String
+
+    // TODO find a cleaner/clever way to initialize this
+    override fun hasAvailablePlugins(): Boolean {
+        if (repositories == null) {
+            this.repositories = listOf(S3UpdateRepository("s3", URL(url), accessKey, secretKey))
         }
+
+        return super.hasAvailablePlugins()
     }
 }

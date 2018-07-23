@@ -19,6 +19,7 @@ package io.undertree.initomatic.components.plugins
 import io.undertree.initomatic.api.InitomaticPlugin
 import mu.KotlinLogging
 import org.pf4j.PluginManager
+import org.pf4j.update.PluginInfo
 import org.pf4j.update.UpdateManager
 import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
@@ -44,6 +45,36 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping("plugins")
 class PluginController(private val pluginManager: PluginManager,
                        private val updateManager: UpdateManager) {
+
+    @GetMapping("/updates")
+    fun something(): MutableList<PluginInfo>? {
+        // check for available (new) plugins
+        if (updateManager.hasAvailablePlugins()) {
+            val availablePlugins = updateManager.availablePlugins
+            logger.debug("Found {} available plugins", availablePlugins.size)
+            for (plugin in availablePlugins) {
+                logger.debug("Found available plugin '{}'", plugin.id)
+                // TODO there seems to be a big disconnect between the docs and impl of the updateManager
+
+                //val lastRelease = plugin.getLastRelease("0.0.0", updateManager)
+                /* val lastRelease: updateManager.getLastPluginRelease(plugin.id)
+                val lastVersion = lastRelease.version
+                logger.debug("Install plugin '{}' with version {}", plugin.id, lastVersion)
+                val installed = updateManager.installPlugin(plugin.id, lastVersion)
+                if (installed) {
+                    logger.debug("Installed plugin '{}'", plugin.id)
+                } else {
+                    logger.error("Cannot install plugin '{}'", plugin.id)
+                    //systemUpToDate = false
+                }
+                */
+            }
+        } else {
+            logger.debug("No available plugins found")
+        }
+
+        return updateManager.availablePlugins
+    }
 
     @GetMapping
     fun findAll(): List<PluginExtension> {

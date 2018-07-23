@@ -34,3 +34,8 @@ management:
   endpoint:
     health:
       show-details: always
+
+s3:
+  url: http://127.0.0.1:9000
+  accessKey: ${S3_ACCESSKEY}
+  secretKey: ${S3_SECRETKEY}
