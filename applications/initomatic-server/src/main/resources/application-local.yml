@@ -39,3 +39,13 @@ s3:
   url: http://127.0.0.1:9000
   accessKey: ${S3_ACCESSKEY}
   secretKey: ${S3_SECRETKEY}
+
+
+loaders:
+  blueprints:
+    enabled: true
+
+# Enable logging levels
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG

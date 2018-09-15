@@ -17,10 +17,12 @@
 package io.undertree.initomatic.components.blueprints
 
 import mu.KotlinLogging
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
+import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
@@ -29,12 +31,15 @@ private val logger = KotlinLogging.logger {}
  */
 @RestController
 @RequestMapping("blueprints")
-class BlueprintController {
+class BlueprintController(private val blueprintRepository: BlueprintRepository) {
 
     @GetMapping
-    fun findAll(): String {
-        logger.info { "blueprintController - findALl" }
+    fun findAll(pageable: Pageable) = blueprintRepository.findAll(pageable)
 
-        return "blueprintController ${Instant.now()}"
+    @GetMapping("{id}")
+    fun findById(@PathVariable("id") id: UUID): Blueprint {
+        // TODO have this throw a proper http exception
+        return blueprintRepository.findById(id)
+                .orElseThrow { IllegalArgumentException() }
     }
 }
