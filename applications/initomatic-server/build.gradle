@@ -40,11 +40,12 @@ dependencies {
     compile project(':applications:initomatic-client')
 
     // kotlin
+    compile 'org.jetbrains.kotlin:kotlin-stdlib'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk7'
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     compile 'org.jetbrains.kotlin:kotlin-reflect'
-    compile 'io.github.microutils:kotlin-logging:1.5.4'
+    compile 'io.github.microutils:kotlin-logging:1.6.10'
     compile 'com.fasterxml.jackson.module:jackson-module-kotlin'
-    compile 'io.github.microutils:kotlin-logging:1.5.4'
     testCompile 'org.jetbrains.kotlin:kotlin-test'
     testCompile 'org.jetbrains.kotlin:kotlin-test-junit'
 

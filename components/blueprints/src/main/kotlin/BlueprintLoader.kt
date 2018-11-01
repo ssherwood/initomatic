@@ -11,6 +11,9 @@ class BlueprintLoader(private val blueprintRepository: BlueprintRepository) {
     @PostConstruct
     fun loadData() {
         blueprintRepository.deleteAll()
-        blueprintRepository.saveAll(listOf("Spring Boot Microservice", "NodeJS Express App", "Go Command Line").map { Blueprint(name = it) })
+        blueprintRepository
+                .saveAll(listOf("Spring Boot Microservice", "NodeJS Express App", "Go Command Line")
+                .map { Blueprint(name = it  //, tags = listOf("foo", "bar")
+                    ) })
     }
 }

@@ -21,4 +21,6 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface BlueprintRepository: MongoRepository<Blueprint, UUID>
+interface BlueprintRepository: MongoRepository<Blueprint, UUID> { //, QuerydslPredicateExecutor<Blueprint> {
+    //fun findByTag
+}

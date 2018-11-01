@@ -32,6 +32,8 @@ data class Blueprint(
         val description: String = "$name description",
         @JsonSerialize(using = ToStringSerializer::class)
         val version: Version = Version.of("0.0.1")
+        //,
+        //val tags: List<String> = listOf()
 )
 
 // TODO this should be moved into a shared lib

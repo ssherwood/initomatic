@@ -1,6 +1,7 @@
 plugins {
     id 'kotlin'
     id 'kotlin-spring'
+    id 'kotlin-kapt'
 }
 
 // noinspection GroovyAssignabilityCheck
@@ -14,22 +15,54 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     }
 }
 
+/*
+idea {
+    module {
+        def kaptMain = file('build/generated/source/kapt/main')
+        sourceDirs += kaptMain
+        generatedSourceDirs += kaptMain
+    }
+}
+*/
+
+kapt {
+    correctErrorTypes = true
+//    processors += "com.querydsl.apt.morphia.MorphiaAnnotationProcessor"
+}
+
 dependencies {
     compile project(':shared:initomatic-api')
 
+    compile 'org.jetbrains.kotlin:kotlin-stdlib'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk7'
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     compile 'org.jetbrains.kotlin:kotlin-reflect'
-    compile 'io.github.microutils:kotlin-logging:1.5.4'
+    compile 'io.github.microutils:kotlin-logging:1.6.10'
     compile 'com.fasterxml.jackson.core:jackson-databind'
 
     compile 'org.springframework:spring-webmvc'
     compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile 'org.springframework.data:spring-data-mongodb'
+
+    //compile('com.querydsl:querydsl-mongodb') {
+    //    exclude group: 'org.mongodb', module: 'mongo-java-driver'
+    //}
+
     // starting with embedded mongo
     compile 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+
+    //compile 'com.querydsl:querydsl-mongodb'
+    //kapt 'com.querydsl:querydsl-apt:4.1.4:morphia'
 
     testCompile 'junit:junit'
     testCompile 'org.assertj:assertj-core'
     testCompile 'org.mockito:mockito-core'
     testCompile 'org.hamcrest:hamcrest-core'
+}
+
+idea {
+    module {
+        sourceDirs += files('build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main')
+        generatedSourceDirs += files('build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main')
+    }
 }
